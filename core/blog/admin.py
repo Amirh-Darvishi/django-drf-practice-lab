@@ -3,8 +3,17 @@ from .models import Post, Category
 # Register your models here.
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['author', 'title', 'status', 'category', 'created_date' ,'published_date']
-    list_filter = ['title', 'author', 'status']
+    list_display = ['author', 'title', 'status', 'created_date' ,'published_date']
+    list_filter = ['title']
+    search_fields = ('author',)
+    ordering = ('created_date',)
 
-admin.site.register(Category)
-admin.site.register(Post)
+
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    
+
+admin.site.register(Category,CategoryAdmin)
+admin.site.register(Post,PostAdmin)
