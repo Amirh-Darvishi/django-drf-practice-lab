@@ -49,7 +49,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "password", "date_of_birth", "is_active", "is_admin"]
+        fields = ["email", "password", "is_active", "is_staff"]
 
 
 class UserAdmin(BaseUserAdmin):
@@ -82,13 +82,13 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             "classes": ("wide",),
             "fields": (
-                "email", "password1", "password2", "is_staff",
+                "email", "password1", "password2", "is_sttaf",
                 "is_active", "groups", "user_permissions"
             )}
         ),
     )
-    search_fields = ("email")
-    ordering = ("email")
+    search_fields = ("email",)
+    ordering = ("email",)
     filter_horizontal = []
 
 
