@@ -61,7 +61,7 @@ class UserAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ("email", "is_staff", "is_active")
-    list_filter = ("email", "is_staff", "is_active")
+    list_filter = ("is_staff", "is_active")
     fieldsets =  (
         ("Authentication", {
             "fields": (
@@ -92,8 +92,15 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
 
 
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'first_name', 'last_name', 'created_date']
+    search_fields = ('user',)
+    ordering = ('created_date',)
+
 # Now register the new UserAdmin...
-admin.site.register(Profile)
+admin.site.register(Profile,ProfileAdmin)
 admin.site.register(User, UserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
