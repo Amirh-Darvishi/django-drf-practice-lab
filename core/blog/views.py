@@ -3,6 +3,8 @@ from django.views.generic import (
     TemplateView, RedirectView, ListView, DetailView, FormView, 
     CreateView, UpdateView, DeleteView)
 
+from django.contrib.auth.mixins import (LoginRequiredMixin, 
+    PermissionRequiredMixin    )
 from blog.models import Post
 from blog.forms import *
 # Create your views here.
@@ -43,7 +45,7 @@ class Maktab(RedirectView):
 
 
 # CBV for list
-class PostList(ListView):
+class PostList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
     context_object_name = 'posts'
     paginate_by = 2
@@ -56,18 +58,18 @@ class PostList(ListView):
     #     posts = Post.objects.all()
     #     return posts
 
-
+    permission_required = 'blog.view_post'
 
 
 #CBV for detail
-class PostDetail(DetailView):
+class PostDetail(LoginRequiredMixin,DetailView):
     model = Post
 
 
 
 
 # CBV for form
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin,CreateView):
     model = Post
     # fields = ['title', 'content', 'status',
     #           'category', 'published_date']
@@ -95,7 +97,7 @@ class ContactCreate(FormView):
 
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
@@ -104,6 +106,6 @@ class PostUpdate(UpdateView):
 
 
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = '/blog/post/'
