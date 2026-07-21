@@ -8,7 +8,8 @@
 <body>
     <h1>{{ object.title }}</h1>
     <hr>
-<p>Author: {{ object.author }}</p>
+<p>Author: {{ object.author.first_name }}{{ object.author.last_name }}</p>
+<p>Email: {{ object.author}}</p>
 <p>Content: {{ object.content }}</p>
 <p>Published: {{ object.published_date|date }}</p>
 </body>
