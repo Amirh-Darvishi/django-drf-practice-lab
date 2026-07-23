@@ -11,6 +11,13 @@ from rest_framework.generics import (GenericAPIView, ListCreateAPIView,
 from rest_framework import mixins, viewsets
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
+from blog.api.v1.permission import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from blog.api.v1.pagination import StandardResultsSetPagination
+
+
+
 # FBV 
 """
 @api_view(["POST", "GET"])
@@ -197,8 +204,14 @@ class PostViewSet(viewsets.ViewSet):
 """
 class PostViewSet(ModelViewSet):
     queryset= Post.objects.filter(status=True)
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    filterset_fields = ['category', 'status', 'author']
+    search_fields = ['title', 'content']
+    ordering_fields = ['published_date']
+    pagination_class = StandardResultsSetPagination
+
 
     @action(methods=['get'], detail=False)
     def get_ok(self, request):
@@ -208,5 +221,5 @@ class PostViewSet(ModelViewSet):
 
 class CategoryViewSet(ModelViewSet):
     queryset= Category.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = CategorySerializer
