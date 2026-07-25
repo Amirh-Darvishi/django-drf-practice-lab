@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from accounts.models import User
+from accounts.models import User ,Profile
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
+
+
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -70,4 +72,46 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
-    
+
+
+
+
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+
+    def validate(self, attrs):
+        return super().validate(attrs)
+
+
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    new_password1 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs.get('new_password') != attrs.get('new_password1'):
+            raise serializers.ValidationError({'detail':'passwords does not match'})
+        try:
+            validate_password(attrs.get('new_password'))
+        except exceptions.ValidationError as e :
+            raise serializers.ValidationError({'new_password':list(e.messages)})
+
+        return super().validate(attrs)
+
+
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    email = serializers.CharField(source='user.email', read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'email','first_name', 'last_name', 'image', 'description')
+        read_only_field = ('email',)
