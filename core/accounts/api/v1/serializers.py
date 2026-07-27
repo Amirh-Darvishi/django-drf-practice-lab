@@ -63,6 +63,9 @@ class CustomAuthTokenSerializer(serializers.Serializer):
             # The authenticate call simply returns None for is_active=False
             # users. (Assuming the default ModelBackend authentication
             # backend.)
+            if not user.is_verified:
+                raise serializers.ValidationError({'detail':'user is not verified'})
+            
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
@@ -83,6 +86,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
     def validate(self, attrs):
+        validated_data = super().validate(attrs)
+        if not self.user.is_verified:
+            raise serializers.ValidationError({'detail':'user is not verified'})
+        validated_data['email'] = self.user.email
+        validated_data['user_id'] = self.user.id
         return super().validate(attrs)
 
 
