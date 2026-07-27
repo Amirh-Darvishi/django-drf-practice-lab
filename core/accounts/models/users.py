@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin)
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
 from django.utils.translation import gettext_lazy as _
-
-
 
 
 class UserManager(BaseUserManager):
@@ -11,6 +12,7 @@ class UserManager(BaseUserManager):
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given email and password.
@@ -39,13 +41,14 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     """
     Custom user model for our app
     """
-    email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
+
+    email = models.EmailField(
+        verbose_name="email address", max_length=255, unique=True
+    )
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -61,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
+
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
