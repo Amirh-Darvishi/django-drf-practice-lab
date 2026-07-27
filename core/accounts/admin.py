@@ -9,6 +9,7 @@ from .models import User, Profile
 
 # Register your models here.
 
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -62,29 +63,40 @@ class UserAdmin(BaseUserAdmin):
     # that reference specific fields on auth.User.
     list_display = ("email", "is_staff", "is_active", "is_verified")
     list_filter = ("is_staff", "is_active")
-    fieldsets =  (
-        ("Authentication", {
-            "fields": (
-              "email", "password")}),
-        ("Permissions", {
-            "fields": (
-                "is_staff", "is_active", "is_superuser", "is_verified")}),
-        ("Group permissions", {
-            "fields": (
-                "groups", "user_permissions")}),
-        ("Important date", {
-            "fields": (
-                "last_login",)})
+    fieldsets = (
+        ("Authentication", {"fields": ("email", "password")}),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_staff",
+                    "is_active",
+                    "is_superuser",
+                    "is_verified",
+                )
+            },
+        ),
+        ("Group permissions", {"fields": ("groups", "user_permissions")}),
+        ("Important date", {"fields": ("last_login",)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
-    add_fieldsets =  (
-        (None, {
-            "classes": ("wide",),
-            "fields": (
-                "email", "password1", "password2", "is_staff",
-                "is_verified", "is_active", "groups", "user_permissions"
-            )}
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_verified",
+                    "is_active",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
         ),
     )
     search_fields = ("email",)
@@ -92,15 +104,14 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
 
 
-
-
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'first_name', 'last_name', 'created_date']
-    search_fields = ('user',)
-    ordering = ('created_date',)
+    list_display = ["user", "first_name", "last_name", "created_date"]
+    search_fields = ("user",)
+    ordering = ("created_date",)
+
 
 # Now register the new UserAdmin...
-admin.site.register(Profile,ProfileAdmin)
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(User, UserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
