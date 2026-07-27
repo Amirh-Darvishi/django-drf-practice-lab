@@ -98,3 +98,17 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
 
+
+
+
+
+from mail_templated import EmailMessage
+from accounts.api.v1.utils import EmailThreading
+
+class EmailSend(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+
+        email_obj = EmailMessage('email/hello.tpl', {'name': 'Amir'},
+                        'amirhhdr13832@gmail.com',to=['amirssss13832@gmail.com'])
+        EmailThreading(email_obj).start()
+        return Response('email sent')
