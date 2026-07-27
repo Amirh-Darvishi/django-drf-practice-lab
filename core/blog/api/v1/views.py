@@ -1,13 +1,19 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from blog.api.v1.serializers import PostSerializer,CategorySerializer
+from blog.api.v1.serializers import PostSerializer, CategorySerializer
 from blog.models import Post, Category
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import (GenericAPIView, ListCreateAPIView,
-                                     RetrieveUpdateDestroyAPIView )
+from rest_framework.generics import (
+    GenericAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework import mixins, viewsets
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
@@ -16,9 +22,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from blog.api.v1.pagination import StandardResultsSetPagination
 
-
-
-# FBV 
+# FBV
 """
 @api_view(["POST", "GET"])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -35,7 +39,7 @@ def post_list(request):
             return Response(serializer.data)
     except Post.DoesNotExist:
         return Response({"detail":"post doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
-"""   
+"""
 
 
 # CBV
@@ -98,16 +102,13 @@ class PostList(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 """
+
+
 class PostList(ListCreateAPIView):
-     
-    queryset= Post.objects.filter(status=True)
+
+    queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-
-
-
-
-
 
 
 # FBV
@@ -164,12 +165,10 @@ class PostDetail(APIView):
 
 class PostDetail(RetrieveUpdateDestroyAPIView):
 
-    queryset= Post.objects.filter(status=True)
+    queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    lookup_field= 'id'
-
-
+    lookup_field = "id"
 
 
 """
@@ -202,24 +201,24 @@ class PostViewSet(viewsets.ViewSet):
     def destroy(self, request, pk):
         pass
 """
+
+
 class PostViewSet(ModelViewSet):
-    queryset= Post.objects.filter(status=True)
+    queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
-    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields = ['category', 'status', 'author']
-    search_fields = ['title', 'content']
-    ordering_fields = ['published_date']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ["category", "status", "author"]
+    search_fields = ["title", "content"]
+    ordering_fields = ["published_date"]
     pagination_class = StandardResultsSetPagination
 
-
-    @action(methods=['get'], detail=False)
+    @action(methods=["get"], detail=False)
     def get_ok(self, request):
-        return Response({'detail':'ok'})
-
+        return Response({"detail": "ok"})
 
 
 class CategoryViewSet(ModelViewSet):
-    queryset= Category.objects.all()
+    queryset = Category.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = CategorySerializer
