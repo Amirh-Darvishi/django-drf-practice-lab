@@ -7,9 +7,7 @@ urlpatterns = [
     path("registration/", RegistrationApiView.as_view(), name="registration"),
     # login token
     path("token/login/", CustomObtainAuthToken.as_view(), name="token-login"),
-    path(
-        "token/logout/", CustomDiscardAuthToken.as_view(), name="token-logout"
-    ),
+    path("token/logout/", CustomDiscardAuthToken.as_view(), name="token-logout"),
     # login JWT
     path(
         "jwt/create/",
