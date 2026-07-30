@@ -46,9 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     Custom user model for our app
     """
 
-    email = models.EmailField(
-        verbose_name="email address", max_length=255, unique=True
-    )
+    email = models.EmailField(verbose_name="email address", max_length=255, unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
