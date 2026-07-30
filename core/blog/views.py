@@ -17,6 +17,8 @@ from django.contrib.auth.mixins import (
 from blog.models import Post
 from blog.forms import *
 
+
+
 # Create your views here.
 
 
@@ -109,3 +111,8 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = "/blog/post/"
+
+
+class PostListApiView(TemplateView):
+    template_name = 'blog/post_list_api.html'
+    
