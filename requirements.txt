@@ -26,5 +26,10 @@ pytest-django
 faker
 django-cors-headers
 
-# background process and cache 
+
+#background process and cache
+celery
+Redis
+django_celery_beat
 django-redis
+
