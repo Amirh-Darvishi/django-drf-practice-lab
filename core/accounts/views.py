@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http importh HttpResponse ,JsonResponse
+from django.http import HttpResponse ,JsonResponse
 import requests
 from .tasks import sendEmail
 from time import sleep
