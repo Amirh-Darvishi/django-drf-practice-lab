@@ -31,3 +31,5 @@ django-cors-headers
 celery
 Redis
 django_celery_beat
+django-redis
+
