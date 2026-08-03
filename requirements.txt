@@ -5,15 +5,15 @@ python-decouple
 pillow
 djangorestframework
 
-
 # third party module
 markdown
 django-filter
 drf-yasg[validation]
 djangorestframework-simplejwt
 djoser
-# deployment module
 
+# deployment module
+gunicorn
 
 # email third party modules
 django-mail-templated
@@ -32,4 +32,3 @@ celery
 Redis
 django_celery_beat
 django-redis
-
