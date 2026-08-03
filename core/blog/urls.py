@@ -32,6 +32,5 @@ urlpatterns = [
     path("post/<int:pk>/delete/", PostDelete.as_view(), name="post-delete"),
     # api
     path("api/v1/", include("blog.api.v1.urls")),
-
-    path('post/api/', PostListApiView.as_view(), name='post-list-api')
+    path("post/api/", PostListApiView.as_view(), name="post-list-api"),
 ]
